@@ -1,0 +1,7 @@
+[run]
+branch = True
+source = iota
+omit = iota/openstack/*
+
+[report]
+ignore_errors = True
