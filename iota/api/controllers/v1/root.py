@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Copyright 2010-2011 OpenStack Foundation
-# Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2016 OpenStack Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,9 +14,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslotest import base
+from iota.api.controllers.v1 import things
 
 
-class TestCase(base.BaseTestCase):
+class V1Controller(object):
+    """Version 1 API controller root."""
 
-    """Test case base class for all unit tests."""
+    things = things.ThingsController()

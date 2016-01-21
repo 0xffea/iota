@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Copyright 2010-2011 OpenStack Foundation
-# Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2016 OpenStack Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,9 +14,20 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslotest import base
+import wsmeext.pecan as wsme_pecan
+
+from pecan import rest
+from wsme import types as wtypes
+
+from iota.api.controllers.v1 import base
 
 
-class TestCase(base.BaseTestCase):
+class Things(base.Base):
+    pass
 
-    """Test case base class for all unit tests."""
+
+class ThingsController(rest.RestController):
+
+    @wsme_pecan.wsexpose(Things)
+    def get(self):
+        return Things()
