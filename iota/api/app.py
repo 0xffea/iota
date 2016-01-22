@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2016 OpenStack Foundation
-#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -16,13 +14,16 @@
 
 import pecan
 
+from oslo_config import cfg
 from paste import deploy
 from werkzeug import serving
+
+CONF = cfg.CONF
 
 
 def setup_app():
     pecan_config = {
-        "app": {
+        'app': {
             'root': 'iota.api.controllers.root.RootController',
             'modules': [],
         }
@@ -46,8 +47,9 @@ def load_app():
 
 def build_server():
     app = load_app()
+    host, port = '0.0.0.0', 9999
 
-    serving.run_simple("0.0.0.0", 9999, app, 1)
+    serving.run_simple(host, port, app, 1)
 
 
 def app_factory(global_config, **local_conf):

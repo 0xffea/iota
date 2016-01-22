@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-#
-# Copyright 2016 OpenStack Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -14,10 +11,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from iota.api import app
-from iota import service
+import sys
+
+from oslo_config import cfg
 
 
-def main():
-    service.prepare_service()
-    app.build_server()
+def prepare_service(argv=None, config_files=None):
+    if argv is None:
+        argv = sys.argv
+    cfg.CONF(argv[1:], project='iota', validate_default_values=True,
+             version='0.1.0',
+             default_config_files=config_files)

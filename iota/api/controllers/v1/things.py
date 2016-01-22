@@ -17,7 +17,6 @@
 import wsmeext.pecan as wsme_pecan
 
 from pecan import rest
-from wsme import types as wtypes
 
 from iota.api.controllers.v1 import base
 

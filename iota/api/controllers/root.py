@@ -29,9 +29,9 @@ class RootController(object):
     @pecan.expose('json')
     def index(self):
         base_url = pecan.request.application_url
-        version = 'v1'
-        released_on = '2016-01-21T00:00:00Z'
-        url = '%s/%s' % (base_url, version)
+        version = 'v1.0'
+        released_on = '2016-01-21'
+        url = '%s/%s' % (base_url, 'v1')
         versions = {
             'versions': {
                 'values': [
