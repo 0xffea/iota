@@ -11,7 +11,7 @@
 # under the License.
 
 """
-SQLAlchemy models for Evoque data.
+SQLAlchemy models for Iota data.
 """
 
 import uuid

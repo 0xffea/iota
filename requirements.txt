@@ -10,7 +10,9 @@ oslo.db
 stevedor
 
 SQLAlchemy
+alembic
 pecan>=0.8.0
 PasteDeploy>=1.5.0
 Werkzeug>=0.7
 WSME>=0.7
+MySQL-python

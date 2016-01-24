@@ -10,7 +10,32 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import sys
+
+from oslo_config import cfg
+from oslo_db.sqlalchemy import session as db_session
+
 from iota.db import migration
+
+CONF = cfg.CONF
+
+_facade = None
+
+
+def get_facade():
+    global _facade
+
+    if not _facade:
+        _facade = db_session.EngineFacade.from_config(CONF)
+    return _facade
+
+get_engine = lambda: get_facade().get_engine()
+get_session = lambda: get_facade().get_session()
+
+
+def get_backend():
+    """The backend is this module itself."""
+    return sys.modules[__name__]
 
 
 def db_sync(engine, version=None):

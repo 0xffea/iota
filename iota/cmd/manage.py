@@ -21,44 +21,32 @@ from oslo_log import log as logging
 
 from iota.db import migration
 from iota import version
+from iota import service
 
 
 CONF = cfg.CONF
 
 
-class DBCommand(object):
+def do_db_version():
+    '''Print database's current migration level.'''
+    print(migration.version())
 
-    @staticmethod
-    def upgrade():
-        migration.upgrade(CONF.command.revision)
 
-    @staticmethod
-    def downgrade():
-        migration.downgrade(CONF.command.revision)
+def do_db_sync():
+    '''Place a database under migration control and upgrade.
 
-    @staticmethod
-    def revision():
-        migration.revision(CONF.command.message, CONF.command.autogenerate)
-
-    @staticmethod
-    def stamp():
-        migration.stamp(CONF.command.revision)
-
-    @staticmethod
-    def version():
-        print(migration.version())
-
-    @staticmethod
-    def create_schema():
-        migration.create_schema()
+    DB is created first if necessary.
+    '''
+    #api.db_sync(api.get_engine(), CONF.command.version)
+    pass
 
 
 def add_command_parsers(subparsers):
     parser = subparsers.add_parser('db_version')
-    parser.set_defaults(func=DBCommand.version)
+    parser.set_defaults(func=do_db_version)
 
     parser = subparsers.add_parser('create_schema')
-    parser.set_defaults(func=DBCommand.create_schema)
+    parser.set_defaults(func=do_db_sync)
 
 
 command_opt = cfg.SubCommandOpt('command',
@@ -72,15 +60,6 @@ def main():
     logging.setup(CONF, 'iota-manage')
     CONF.register_cli_opt(command_opt)
 
-    try:
-        default_config_files = cfg.find_config_files('iota', 'iota-manage')
-        CONF(sys.argv[1:], project='iota', prog='iota-manage',
-             version=version.version_info.version_string(),
-             default_config_files=default_config_files)
-    except RuntimeError as e:
-        sys.exit("ERROR: %s" % e)
+    service.prepare_service(default_config_files=['/etc/iota/iota.conf'])
 
-    try:
-        CONF.command.func()
-    except Exception as e:
-        sys.exit("ERROR: %s" % e)
+    CONF.command.func()
