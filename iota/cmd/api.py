@@ -14,10 +14,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from oslo_log import log as logging
+
 from iota.api import app
 from iota import service
 
+LOG = logging.getLogger(__name__)
+
 
 def main():
-    service.prepare_service()
+    service.prepare_service(default_config_files=['/etc/iota/iota.conf'])
     app.build_server()

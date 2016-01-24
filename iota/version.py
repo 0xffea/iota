@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -12,12 +10,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo_config import cfg
+import pbr.version
 
-import iota.api.app
-
-CONF = cfg.CONF
-
-
-def list_opts():
-    yield iota.api.app.api_server_opt_group, iota.api.app.api_server_opts
+version_info = pbr.version.VersionInfo('iota')

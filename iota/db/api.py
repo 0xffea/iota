@@ -1,10 +1,8 @@
-# -*- encoding: utf-8 -*-
-#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#         http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -13,11 +11,10 @@
 # under the License.
 
 from oslo_config import cfg
-
-import iota.api.app
+from oslo_db import api as db_api
 
 CONF = cfg.CONF
 
-
-def list_opts():
-    yield iota.api.app.api_server_opt_group, iota.api.app.api_server_opts
+_BACKEND_MAPPING = {'sqlalchemy': 'iota.db.sqlalchemy.api'}
+IMPL = db_api.DBAPI.from_config(cfg.CONF, backend_mapping=_BACKEND_MAPPING,
+                                lazy=True)

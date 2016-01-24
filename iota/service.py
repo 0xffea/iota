@@ -16,9 +16,9 @@ import sys
 from oslo_config import cfg
 
 
-def prepare_service(argv=None, config_files=None):
+def prepare_service(argv=None, default_config_files=None):
     if argv is None:
         argv = sys.argv
     cfg.CONF(argv[1:], project='iota', validate_default_values=True,
              version='0.1.0',
-             default_config_files=config_files)
+             default_config_files=default_config_files)

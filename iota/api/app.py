@@ -12,13 +12,33 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import logging
+import os
+
 import pecan
 
 from oslo_config import cfg
+from oslo_log import log
 from paste import deploy
 from werkzeug import serving
 
+LOG = log.getLogger(__name__)
 CONF = cfg.CONF
+
+api_server_opts = [
+    cfg.StrOpt('host',
+               default='0.0.0.0',
+               help='The listen IP for the Iota API server.'),
+    cfg.PortOpt('port',
+                default=9999,
+                help='The port number of the Iota API server.'),
+]
+
+api_server_opt_group = cfg.OptGroup(name='api',
+                                    title='Parameters for the API server')
+
+CONF.register_group(api_server_opt_group)
+CONF.register_opts(api_server_opts, api_server_opt_group)
 
 
 def setup_app():
@@ -47,7 +67,11 @@ def load_app():
 
 def build_server():
     app = load_app()
-    host, port = '0.0.0.0', 9999
+    host, port = CONF.api.host, CONF.api.port
+
+    LOG.info('Starting server with PID %s' % os.getpid())
+    LOG.info('Configuration:')
+    CONF.log_opt_values(LOG, logging.INFO)
 
     serving.run_simple(host, port, app, 1)
 
