@@ -19,9 +19,9 @@ import sys
 from oslo_config import cfg
 from oslo_log import log as logging
 
-from iota.db import migration
 from iota import version
 from iota import service
+from iota.db import migration
 
 
 CONF = cfg.CONF
@@ -49,17 +49,14 @@ def add_command_parsers(subparsers):
     parser.set_defaults(func=do_db_sync)
 
 
-command_opt = cfg.SubCommandOpt('command',
-                                title='Commands',
-                                help='Show available commands.',
-                                handler=add_command_parsers)
-
-
 def main():
-    logging.register_options(CONF)
-    logging.setup(CONF, 'iota-manage')
+    command_opt = cfg.SubCommandOpt('command',
+                                    title='Commands',
+                                    help='Show available commands.',
+                                    handler=add_command_parsers)
+
     CONF.register_cli_opt(command_opt)
 
-    service.prepare_service(default_config_files=['/etc/iota/iota.conf'])
-
+    #service.prepare_service(default_config_files=['/etc/iota/iota.conf'])
+    service.prepare_service()
     CONF.command.func()

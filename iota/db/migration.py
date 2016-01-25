@@ -15,8 +15,8 @@
 
 from oslo_config import cfg
 from stevedore import driver
+from oslo_db import options
 
-CONF = cfg.CONF
 _IMPL = None
 
 
@@ -24,9 +24,11 @@ def get_backend():
     global _IMPL
     if not _IMPL:
         # TODO(0xffea): Fix conf file import
-        #CONF.import_opt('backend', 'oslo_db.options', group='database')
-        _IMPL = driver.DriverManager('iota.database.migration_backend',
-                                     'iota.db.sqlalchemy.migration').driver
+        # cfg.CONF.import_opt('backend', 'oslo_db.options', group='database')
+        _IMPL = driver.DriverManager(
+                    namespace="iota.database.migration_backend",
+                    name='sqlalchemy',
+                    invoke_on_load=True).driver
     return _IMPL
 
 
@@ -49,7 +51,3 @@ def stamp(version):
 
 def revision(message, autogenerate):
     return get_backend().revision(message, autogenerate)
-
-
-def create_schema():
-    return get_backend().create_schema()
